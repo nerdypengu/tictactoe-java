@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class GameMain extends JPanel {
+public class VsAIGame extends JPanel {
     private static final long serialVersionUID = 1L; // to prevent serializable warning
 
     // Define named constants for the drawing graphics
@@ -18,9 +18,10 @@ public class GameMain extends JPanel {
     private State currentState; // the current state of the game
     private Seed currentPlayer; // the current player
     private JLabel statusBar; // for displaying status message
+    private int playerNo = 1;
 
     /** Constructor to setup the UI and game components */
-    public GameMain() {
+    public VsAIGame() {
 
         // This JPanel fires MouseEvent
         super.addMouseListener(new MouseAdapter() {
@@ -34,11 +35,16 @@ public class GameMain extends JPanel {
 
                 if (currentState == State.PLAYING) {
                     if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
-                            && board.cells[row][col].content == Seed.NO_SEED) {
+                            && board.cells[row][col].content == Seed.NO_SEED && playerNo == 1) {
                         // Update cells[][] and return the new game state after the move
                         currentState = board.stepGame(currentPlayer, row, col);
                         // Switch player
                         currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+                        playerNo++;
+
+                    } else if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
+                            && board.cells[row][col].content == Seed.NO_SEED && playerNo == 2) {
+                        AIMove();
                     }
                 }
                 // Refresh the drawing canvas
@@ -62,6 +68,7 @@ public class GameMain extends JPanel {
         newGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                playerNo = 1;
                 newGame(); // restart the game
                 repaint(); // Callback paintComponent().
             }
@@ -96,6 +103,21 @@ public class GameMain extends JPanel {
         // Set up Game
         initGame();
         newGame();
+    }
+
+    // AI Movement
+    public void AIMove() {
+        double minValue = 0; // replace with your desired minimum value
+        double maxValue = 3; // replace with your desired maximum value
+        int p2Col = (int) minValue + (int) (Math.random() * (maxValue - minValue));
+        int p2Row = (int) minValue + (int) (Math.random() * (maxValue - minValue));
+        if (board.cells[p2Row][p2Col].content != Seed.NO_SEED) {
+            AIMove();
+        } else {
+            currentState = board.stepGame(Seed.NOUGHT, p2Row, p2Col);
+            currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
+            playerNo--;
+        }
     }
 
     /** Initialize the game (run once) */
@@ -138,4 +160,15 @@ public class GameMain extends JPanel {
         }
     }
 
+    public static void main(String[] args) {
+
+        JFrame frame = new JFrame("Tic Tac Toe");
+        // Set the content-pane of the JFrame to an instance of main JPanel
+        frame.setContentPane(new VsAIGame());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setLocationRelativeTo(null); // center the application window
+        frame.setVisible(true); // show itz
+
+    }
 }

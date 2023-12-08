@@ -1,6 +1,7 @@
 import java.awt.*;
+import javax.swing.*;
 
-public class Board {
+public class Board extends JPanel {
     // Define named constants
     public static final int ROWS = 3; // ROWS x COLS cells
     public static final int COLS = 3;
@@ -50,6 +51,9 @@ public class Board {
     public State stepGame(Seed player, int selectedRow, int selectedCol) {
         // Update game board
         cells[selectedRow][selectedCol].content = player;
+        // Add debugging output
+        System.out.println("Current Board State:");
+        printBoardState();
 
         // Compute and return the new game state
         if (cells[selectedRow][0].content == player // 3-in-the-row
@@ -78,6 +82,8 @@ public class Board {
             }
             return State.DRAW; // no empty cell, it's a draw
         }
+        // Add debugging output
+
     }
 
     /** Paint itself on the graphics canvas, given the Graphics context */
@@ -100,6 +106,15 @@ public class Board {
             for (int col = 0; col < COLS; ++col) {
                 cells[row][col].paint(g); // ask the cell to paint itself
             }
+        }
+    }
+
+    private void printBoardState() {
+        for (int row = 0; row < ROWS; ++row) {
+            for (int col = 0; col < COLS; ++col) {
+                System.out.print(cells[row][col].content + " ");
+            }
+            System.out.println();
         }
     }
 }
