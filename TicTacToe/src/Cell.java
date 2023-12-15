@@ -1,3 +1,10 @@
+/* KELOMPOK 10
+ * Eugenia Indrawan - 5026221020
+ * Ashila Mahdiyyah - 5026221148
+ * Razi Alvaro Arman - 5026221168
+ * 
+*/
+
 import java.awt.*;
 
 public class Cell {

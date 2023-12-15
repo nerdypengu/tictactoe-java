@@ -1,3 +1,10 @@
+/* KELOMPOK 10
+ * Eugenia Indrawan - 5026221020
+ * Ashila Mahdiyyah - 5026221148
+ * Razi Alvaro Arman - 5026221168
+ * 
+*/
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -82,7 +89,6 @@ public class Board extends JPanel {
             }
             return State.DRAW; // no empty cell, it's a draw
         }
-        // Add debugging output
 
     }
 

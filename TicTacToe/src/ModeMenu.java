@@ -1,3 +1,10 @@
+/* KELOMPOK 10
+ * Eugenia Indrawan - 5026221020
+ * Ashila Mahdiyyah - 5026221148
+ * Razi Alvaro Arman - 5026221168
+ * 
+*/
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,6 +33,7 @@ public class ModeMenu extends JFrame {
                         frame.pack();
                         frame.setLocationRelativeTo(null); // center the application window
                         frame.setVisible(true); // show it
+                        dispose();
                     }
                 });
             }
@@ -39,11 +47,12 @@ public class ModeMenu extends JFrame {
                     public void run() {
                         JFrame frame = new JFrame("Tic Tac Toe");
                         // Set the content-pane of the JFrame to an instance of main JPanel
-                        frame.setContentPane(new GameMain());
+                        frame.setContentPane(new VsAIGame());
                         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                         frame.pack();
                         frame.setLocationRelativeTo(null); // center the application window
                         frame.setVisible(true); // show it
+                        dispose();
                     }
                 });
             }
@@ -57,6 +66,7 @@ public class ModeMenu extends JFrame {
                     StartMenu startMenu = new StartMenu();
                     startMenu.setVisible(true);
                     setVisible(false);
+                    dispose();
                 });
             }
         });

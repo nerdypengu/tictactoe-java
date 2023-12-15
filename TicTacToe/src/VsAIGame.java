@@ -1,3 +1,10 @@
+/* KELOMPOK 10
+ * Eugenia Indrawan - 5026221020
+ * Ashila Mahdiyyah - 5026221148
+ * Razi Alvaro Arman - 5026221168
+ * 
+*/
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -20,39 +27,35 @@ public class VsAIGame extends JPanel {
     private JLabel statusBar; // for displaying status message
     private int playerNo = 1;
 
-    /** Constructor to setup the UI and game components */
     public VsAIGame() {
 
-        // This JPanel fires MouseEvent
         super.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) { // mouse-clicked handler
+            public void mouseClicked(MouseEvent e) {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
-                // Get the row and column clicked
                 int row = mouseY / Cell.SIZE;
                 int col = mouseX / Cell.SIZE;
 
                 if (currentState == State.PLAYING) {
                     if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
                             && board.cells[row][col].content == Seed.NO_SEED && playerNo == 1) {
-                        // Update cells[][] and return the new game state after the move
+
                         currentState = board.stepGame(currentPlayer, row, col);
-                        // Switch player
                         currentPlayer = (currentPlayer == Seed.CROSS) ? Seed.NOUGHT : Seed.CROSS;
                         playerNo++;
+                        if (currentState == State.PLAYING) {
+                            AIMove();
+                        }
 
-                    } else if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
-                            && board.cells[row][col].content == Seed.NO_SEED && playerNo == 2) {
-                        AIMove();
                     }
+
                 }
-                // Refresh the drawing canvas
-                repaint(); // Callback paintComponent().
+                repaint();
             }
         });
 
-        // Setup the status bar (JLabel) to display status message
+        // Setup the status bar
         statusBar = new JLabel();
         statusBar.setFont(FONT_STATUS);
         statusBar.setBackground(COLOR_BG_STATUS);
@@ -61,7 +64,6 @@ public class VsAIGame extends JPanel {
         statusBar.setHorizontalAlignment(JLabel.LEFT);
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
 
-        // Create a JButton
         JButton newGameButton = new JButton("New Game");
         newGameButton.setPreferredSize(new Dimension(100, 30));
         newGameButton.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -69,46 +71,36 @@ public class VsAIGame extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 playerNo = 1;
-                newGame(); // restart the game
-                repaint(); // Callback paintComponent().
+                newGame();
+                repaint();
             }
         });
 
-        // Create a JPanel to hold the status bar and the button
         JPanel statusBarPanel = new JPanel();
         statusBarPanel.setLayout(new BorderLayout());
 
-        // Create a JPanel for the status bar with FlowLayout to align components to the
-        // left
         JPanel statusBarContentPanel = new JPanel();
         statusBarContentPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        // Add the status bar to the content panel
         statusBarContentPanel.add(statusBar);
 
-        // Add the status bar content panel to the main panel at the WEST (left)
-        // position
         statusBarPanel.add(statusBarContentPanel, BorderLayout.WEST);
 
-        // Add the button panel to the main panel at the EAST (right) position
         statusBarPanel.add(newGameButton, BorderLayout.EAST);
 
-        // Add the panel to the JFrame
         super.setLayout(new BorderLayout());
-        super.add(statusBarPanel, BorderLayout.PAGE_END); // same as SOUTH
+        super.add(statusBarPanel, BorderLayout.PAGE_END);
         super.setPreferredSize(new Dimension(450, 480));
-        // account for statusBar in height
         super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
 
-        // Set up Game
         initGame();
         newGame();
     }
 
     // AI Movement
     public void AIMove() {
-        double minValue = 0; // replace with your desired minimum value
-        double maxValue = 3; // replace with your desired maximum value
+        double minValue = 0;
+        double maxValue = 3;
         int p2Col = (int) minValue + (int) (Math.random() * (maxValue - minValue));
         int p2Row = (int) minValue + (int) (Math.random() * (maxValue - minValue));
         if (board.cells[p2Row][p2Col].content != Seed.NO_SEED) {
@@ -120,29 +112,27 @@ public class VsAIGame extends JPanel {
         }
     }
 
-    /** Initialize the game (run once) */
     public void initGame() {
-        board = new Board(); // allocate the game-board
+        board = new Board();
     }
 
-    /** Reset the game-board contents and the current-state, ready for new game */
     public void newGame() {
         for (int row = 0; row < Board.ROWS; ++row) {
             for (int col = 0; col < Board.COLS; ++col) {
-                board.cells[row][col].content = Seed.NO_SEED; // all cells empty
+                board.cells[row][col].content = Seed.NO_SEED;
             }
         }
-        currentPlayer = Seed.CROSS; // cross plays first
-        currentState = State.PLAYING; // ready to play
+        currentPlayer = Seed.CROSS;
+        currentState = State.PLAYING;
     }
 
     /** Custom painting codes on this JPanel */
     @Override
-    public void paintComponent(Graphics g) { // Callback via repaint()
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setBackground(COLOR_BG); // set its background color
+        setBackground(COLOR_BG);
 
-        board.paint(g); // ask the game board to paint itself
+        board.paint(g);
 
         // Print status-bar message
         if (currentState == State.PLAYING) {
@@ -163,12 +153,11 @@ public class VsAIGame extends JPanel {
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("Tic Tac Toe");
-        // Set the content-pane of the JFrame to an instance of main JPanel
         frame.setContentPane(new VsAIGame());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setLocationRelativeTo(null); // center the application window
-        frame.setVisible(true); // show itz
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
     }
 }
