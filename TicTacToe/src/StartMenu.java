@@ -32,6 +32,16 @@ public class StartMenu extends JFrame {
             }
         });
 
+        JButton aboutUsButton = new JButton("About Us");
+        aboutUsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new AboutMe().setVisible(true);
+
+            }
+        });
+
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(new ActionListener() {
             @Override
@@ -54,6 +64,9 @@ public class StartMenu extends JFrame {
 
         gbc.gridy++;
         panel.add(startGameButton, gbc);
+
+        gbc.gridy++;
+        panel.add(aboutUsButton, gbc);
 
         gbc.gridy++;
         panel.add(exitButton, gbc);
